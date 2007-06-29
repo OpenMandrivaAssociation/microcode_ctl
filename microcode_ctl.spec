@@ -1,13 +1,13 @@
 Summary:   Intel P6 CPU Microcode Utility
 Name:      microcode_ctl
-Version: 1.14
+Version: 1.17
 Release:   %mkrel 1
 Group:     System/Kernel and hardware
 License:   GPL
 Url:       http://www.urbanmyth.org/microcode/
 Source:    http://www.urbanmyth.org/microcode/%name-%version.tar.bz2
 Source1:   microcode_ctl
-Patch1:    microcode_ctl-build.diff.bz2
+Patch1:    microcode_ctl-build.diff
 Buildroot: %_tmppath/%name-%version-buildroot
 ExclusiveArch: %ix86
 BuildRequires: kernel-source
