@@ -8,7 +8,6 @@ Url:       http://www.urbanmyth.org/microcode/
 Source:    http://www.urbanmyth.org/microcode/%name-%version.tar.bz2
 Source1:   microcode_ctl
 Patch1:    microcode_ctl-build.diff
-Buildroot: %_tmppath/%name-%version-buildroot
 ExclusiveArch: %ix86
 BuildRequires: kernel-source
 
