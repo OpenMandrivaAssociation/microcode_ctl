@@ -60,6 +60,8 @@ install -m 644 %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man8
 # install monthly cron
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.monthly
 install -m755 %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/cron.monthly
+#
+mkdir -p $RPM_BUILD_ROOT/lib/firmware/amd-ucode 
 
 %clean
 rm -r $RPM_BUILD_ROOT
@@ -70,6 +72,7 @@ rm -r $RPM_BUILD_ROOT
 %_mandir/man8/*
 %_initrddir/%name
 %_sysconfdir/cron.monthly/update-microcode
+/lib/firmware/amd-ucode
 
 %post
 # Only enable on Intel 686's and above or AMD family 0x10 and above
