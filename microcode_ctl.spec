@@ -1,7 +1,7 @@
-Summary:   Intel P6 CPU Microcode Utility
+Summary:   Intel P6 / AMD CPU Microcode Utility
 Name:      microcode_ctl
-Version: 1.17
-Release:   %mkrel 8
+Version:   1.17
+Release:   %mkrel 9
 Group:     System/Kernel and hardware
 License:   GPLv2
 Url:       http://www.urbanmyth.org/microcode/
@@ -33,6 +33,8 @@ Recent kernels have the ability to update this microcode.
 The microcode update is volatile and needs to be uploaded on each system
 boot. I.e. it doesn't reflash your cpu permanently.
 Reboot and it reverts back to the old microcode.
+
+This package also support updating latest AMD CPU microcode.
 
 %prep
 %setup -q
