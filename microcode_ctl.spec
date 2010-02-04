@@ -1,7 +1,7 @@
 Summary:   Intel P6 / AMD CPU Microcode Utility
 Name:      microcode_ctl
 Version:   1.17
-Release:   %mkrel 9
+Release:   %mkrel 10
 Group:     System/Kernel and hardware
 License:   GPLv2
 Url:       http://www.urbanmyth.org/microcode/
