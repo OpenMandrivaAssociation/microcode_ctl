@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# check if there is a new microcode for your CPU and update it 
+
+# Intel 686 and above, AMD family 16 and above
+vendor=`grep "^vendor_id" /proc/cpuinfo | head -n1 | awk -F ": " '{ print $2 }'`
+family=`grep "^cpu family" /proc/cpuinfo | head -n1 | awk -F ": " '{ print $2 }'`
+
+if [ "$vendor" = "GenuineIntel" ] && [ $family -ge 6 ]; then
+	/usr/sbin/update-intel-microcode
+elif [ "$vendor" = "AuthenticAMD" ] && [ $family -ge 16 ]; then
+	minor=`uname -r |  cut -d . -f 3 | cut -d - -f 1`
+	if [ $minor -ge 29 ]; then
+		/usr/sbin/update-amd-microcode
+	fi
+fi
+

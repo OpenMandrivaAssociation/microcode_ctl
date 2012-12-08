@@ -1,0 +1,77 @@
+#!/bin/sh
+# Copyright (c) 2010 Frederic Crozat - Mandriva
+# based on update-intel-microcode by Giacomo A. Catenazzi <cate@debian.org>
+# This file is licensed with GPL version 2 (or at your option any later versions)
+# For the full license, see http://fsf.org
+
+# This script will download and update the AMD microcode
+
+# Check curl
+if ! which curl > /dev/null 2> /dev/null; then
+    echo "curl not found. Please install curl" 1>&2
+    exit 1
+fi
+
+grep -sq AuthenticAMD /proc/cpuinfo
+RETVAL=$?
+
+if [ $RETVAL -ne 0 -a "-$1" != "---download-only" ]; then
+    echo "microcode.ctl: Yet we provide only microcodes for AMD processors" 1>&2
+    echo "Your CPU seems not an AMD processor" 1>&2
+    exit 1
+fi
+
+REMOTE_FILE='http://www.amd64.org/pub/microcode/amd-ucode-latest.tar'
+if [ "-$1" == "---download-only" ]; then
+	LOCAL_DIR=$PWD
+	DOWNLOAD_ONLY=1
+else
+DOWNLOAD_ONLY=0
+
+REMOTE_DATE_ISO=`curl -I --silent $REMOTE_FILE | grep Last-Modified | sed -e 's,Last-Modified: \(.*\),\1,g'`
+REMOTE_DATE=`date --date="$REMOTE_DATE_ISO" +%Y%m%d`
+
+LOCAL_DIR=/lib/firmware/amd-ucode
+fi
+
+LOCAL_FILE="$LOCAL_DIR/microcode_amd.bin"
+
+if [ ! $DOWNLOAD_ONLY ]; then
+if [ -f "$LOCAL_FILE" ] ; then
+    LOCAL_DATE=`stat --format=%y $LOCAL_FILE |cut -d ' ' -f 1 | sed -e 's/-//g'`
+    echo "Local version: $LOCAL_DATE"
+    echo "Remote version: $REMOTE_DATE"
+
+    if [ "0$REMOTE_DATE" = "0" ] ; then
+	echo "could not extract the actual data of remote microcode"
+	exit 1
+    elif [ "0$REMOTE_DATE" -le "0$LOCAL_DATE" ] ; then
+	echo "No need to download a new microcode" 1>&2
+	exit 0
+    fi
+else
+    echo "Local version: (none)"
+    echo "Remote version: $REMOTE_DATE"
+fi
+fi # ! DOWNLOAD_ONLY
+
+echo "Downloading a new version of microcode."
+
+if curl --retry 2 --retry-delay 20 --silent "$REMOTE_FILE" -o $LOCAL_DIR/amd-ucode-latest.tar ; then
+    if [ $DOWNLOAD_ONLY -ne 1 ]; then
+	tar --strip-components=1 -xf $LOCAL_DIR/amd-ucode-latest.tar -C $LOCAL_DIR
+	rm -f $LOCAL_DIR/amd-ucode-latest.tar
+    fi
+    echo "microcode downloaded sucessfully" 1>&2
+else
+    echo "Error on downloading the microcode." 1>&2
+    echo "Install microcode manually." 1>&2
+    exit 1
+fi
+
+# load the new microcode
+
+if [ "-$1" != "---no-reload" -a "-$1" != "---download-only" ] ; then
+    /etc/rc.d/init.d/microcode_ctl reload
+fi
+

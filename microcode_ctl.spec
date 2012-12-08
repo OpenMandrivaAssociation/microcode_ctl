@@ -1,7 +1,7 @@
-Summary:   Intel P6 / AMD CPU Microcode Utility
+Summary:   Intel / AMD CPU Microcode Utility
 Name:      microcode_ctl
 Version:   1.17
-Release:   %mkrel 12
+Release:   16
 Group:     System/Kernel and hardware
 License:   GPLv2
 Url:       http://www.urbanmyth.org/microcode/
@@ -17,17 +17,19 @@ Source5:   update-amd-microcode.8
 Source6:   update-microcode
 # needed by firmware downloaders
 Suggests:  curl
-# (fc) 1.17-8mdv fix paths (Fedora)
+# we have microcode packaged
+Suggests:  microcode
+# (fc) 1.17-8 fix paths (Fedora)
+Provides: microcode
 Patch0:    microcode_ctl.patch
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
-Buildroot: %_tmppath/%name-%version-buildroot
 ExclusiveArch: %ix86 x86_64
 
 %description
 Since PentiumPro, Intel CPU are made of a RISC chip and of a microcode whose
 purpose is to decompose "old" ia32 instruction into new risc ones.
-P6 familly is concerned: PPro, PII, Celeron, PIII, Celeron2.
+P6 familly is concerned: PPro, PII, Celeron, PIII, Celeron2, Core 2, ...
 Recent kernels have the ability to update this microcode.
 
 The microcode update is volatile and needs to be uploaded on each system
@@ -44,8 +46,6 @@ This package also support updating latest AMD CPU microcode.
 make CFLAGS="$RPM_OPT_FLAGS"
 
 %install
-rm -rf $RPM_BUILD_ROOT 
-
 %makeinstall_std INSDIR=%{_sbindir} MANDIR=%{_mandir}/man8
 # replace upstream initscript with our own
 rm -rf %buildroot%_sysconfdir/init.d
@@ -64,9 +64,9 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/cron.monthly
 install -m755 %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/cron.monthly
 #
 mkdir -p $RPM_BUILD_ROOT/lib/firmware/amd-ucode 
+mkdir -p $RPM_BUILD_ROOT/lib/firmware/intel-microcode
 
 %clean
-rm -r $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
@@ -75,6 +75,7 @@ rm -r $RPM_BUILD_ROOT
 %_initrddir/%name
 %_sysconfdir/cron.monthly/update-microcode
 /lib/firmware/amd-ucode
+/lib/firmware/intel-microcode
 
 %post
 # Only enable on Intel 686's and above or AMD family 0x10 and above
@@ -91,4 +92,17 @@ fi
 
 %preun
 %_preun_service %{name}
+
+
+%changelog
+
+* Tue Jun 19 2012 zezinho <zezinho> 1.17-14.mga3
++ Revision: 261992
+- cleanup spec
+
+  + alien <alien>
+    - Fix wrong exit-code on newer kernels #4327 & #6175
+
+  + tv <tv>
+    - make it clear latest Intel CPUs are supported
 

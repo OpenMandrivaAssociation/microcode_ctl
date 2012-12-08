@@ -1,8 +1,2 @@
 sources:
-  "microcode_ctl:"	698ce2bafe34f66c25b3dcdcd37943c602700dac
-  "microcode_ctl-1.17.tar.bz2:"	ffb355c0823e89e3a1d40f4a83cc9067eb3579e6
-  "update-amd-microcode:"	de5705c590ff4374b55e8c5c11ea755c648af12e
-  "update-amd-microcode.8:"	e1b9cf1a643423c912ced5687ac213a2a57707e4
-  "update-intel-microcode:"	c9369ae78fd9cfb85d5740d9af859bc94dc12944
-  "update-intel-microcode.8:"	52cc88f0fae840f5c61ec8afe7ded39d9c246805
-  "update-microcode:"	bd6226347574d655ff7935e3b0ce35156cc76959
+  "microcode_ctl-1.17.tar.bz2": ffb355c0823e89e3a1d40f4a83cc9067eb3579e6
