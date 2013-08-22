@@ -16,7 +16,7 @@ Source5:	update-amd-microcode.8
 # monthly cron
 Source6:	update-microcode
 Patch0:	microcode_ctl.patch
-ExclusiveArch:	%ix86 x86_64
+ExclusiveArch:	%ix86 x86_64 %arm
 # needed by firmware downloaders
 Suggests:	curl
 # we have microcode packaged
