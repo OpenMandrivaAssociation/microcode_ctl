@@ -1,11 +1,13 @@
+%define upstream_version 2.1-1
+
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
-Version:	1.17
-Release:	16
+Version:	2.1
+Release:	11
 Group:		System/Kernel and hardware
 License:	GPLv2
-Url:		http://www.urbanmyth.org/microcode/
-Source0:	http://www.urbanmyth.org/microcode/%name-%version.tar.bz2
+Url:		http://fedorahosted.org/microcode_ctl
+Source0:	http://fedorahosted.org/released/microcode_ctl/%{name}-%{upstream_version}.tar.xz
 Source1:	microcode_ctl
 # Intel firmware downloader (Debian)
 Source2:	update-intel-microcode
@@ -15,7 +17,6 @@ Source4:	update-amd-microcode
 Source5:	update-amd-microcode.8
 # monthly cron
 Source6:	update-microcode
-Patch0:	microcode_ctl.patch
 ExclusiveArch:	%ix86 x86_64 %arm
 # needed by firmware downloaders
 Suggests:	curl
@@ -38,14 +39,17 @@ Reboot and it reverts back to the old microcode.
 This package also support updating latest AMD CPU microcode.
 
 %prep
-%setup -q
+%setup -qn %{name}-%{upstream_version}
 %apply_patches
 
 %build
-make CFLAGS="$RPM_OPT_FLAGS"
+%setup_compile_flags
+%make
 
 %install
-%makeinstall_std INSDIR=%{_sbindir} MANDIR=%{_mandir}/man8
+mkdir -p %{buildroot}%{_mandir}/man8
+%makeinstall_std INSDIR=%{_sbindir} PREFIX=%{_prefix}
+
 # replace upstream initscript with our own
 rm -rf %{buildroot}%{_sysconfdir}/init.d
 mkdir -p %{buildroot}/%{_initrddir}
@@ -65,15 +69,6 @@ install -m755 %{SOURCE6} %{buildroot}%{_sysconfdir}/cron.monthly
 mkdir -p %{buildroot}/lib/firmware/amd-ucode 
 mkdir -p %{buildroot}/lib/firmware/intel-microcode
 
-
-%files
-%{_sbindir}/*
-%{_mandir}/man8/*
-%{_initrddir}/%name
-%{_sysconfdir}/cron.monthly/update-microcode
-/lib/firmware/amd-ucode
-/lib/firmware/intel-microcode
-
 %post
 # Only enable on Intel 686's and above or AMD family 0x10 and above
 vendor=`cat /proc/cpuinfo | grep "^vendor_id" | sort -u | awk -F ":	" '{ print $2 }'`
@@ -90,3 +85,11 @@ fi
 %preun
 %_preun_service %{name}
 
+%files
+%doc README
+%{_sbindir}/*
+%{_mandir}/man8/*
+%{_initrddir}/%name
+%{_sysconfdir}/cron.monthly/update-microcode
+/lib/firmware/amd-ucode
+/lib/firmware/intel-microcode
