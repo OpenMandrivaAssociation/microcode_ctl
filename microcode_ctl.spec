@@ -3,12 +3,11 @@
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
 Version:	2.1
-Release:	1
+Release:	2
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		http://fedorahosted.org/microcode_ctl
 Source0:	http://fedorahosted.org/released/microcode_ctl/%{name}-%{upstream_version}.tar.xz
-Source1:	microcode_ctl
 # Intel firmware downloader (Debian)
 Source2:	update-intel-microcode
 Source3:	update-intel-microcode.8
@@ -50,10 +49,6 @@ This package also support updating latest AMD CPU microcode.
 mkdir -p %{buildroot}%{_mandir}/man8
 %makeinstall_std INSDIR=%{_sbindir} PREFIX=%{_prefix}
 
-# replace upstream initscript with our own
-rm -rf %{buildroot}%{_sysconfdir}/init.d
-mkdir -p %{buildroot}/%{_initrddir}
-install -m 755 %SOURCE1 %{buildroot}/%{_initrddir}
 # do not ship non-free firmware in this package
 rm -rf %{buildroot}/lib/firmware
 # install intel firmware downloader 
@@ -67,29 +62,12 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.monthly
 install -m755 %{SOURCE6} %{buildroot}%{_sysconfdir}/cron.monthly
 #
 mkdir -p %{buildroot}/lib/firmware/amd-ucode 
-mkdir -p %{buildroot}/lib/firmware/intel-microcode
-
-%post
-# Only enable on Intel 686's and above or AMD family 0x10 and above
-vendor=`cat /proc/cpuinfo | grep "^vendor_id" | sort -u | awk -F ":	" '{ print $2 }'`
-family=`cat /proc/cpuinfo | grep "^cpu family" | sort -u | awk -F ":	" '{ print $2 }'`
-if [ "$vendor" = "GenuineIntel" ]; then
- [ $family -lt 6 ] && exit 0
-elif [ "$vendor" = "AuthenticAMD" ]; then
- [ $family -lt 16 ] && exit 0
-else
- exit 0
-fi
-%_post_service %{name}
-
-%preun
-%_preun_service %{name}
+mkdir -p %{buildroot}/lib/firmware/intel-ucode
 
 %files
 %doc README
 %{_sbindir}/*
 %{_mandir}/man8/*
-%{_initrddir}/%name
 %{_sysconfdir}/cron.monthly/update-microcode
 /lib/firmware/amd-ucode
-/lib/firmware/intel-microcode
+/lib/firmware/intel-ucode
