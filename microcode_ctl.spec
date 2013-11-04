@@ -1,7 +1,7 @@
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
 Version:	1.17
-Release:	16
+Release:	17
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		http://www.urbanmyth.org/microcode/
