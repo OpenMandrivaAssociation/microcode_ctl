@@ -1,9 +1,9 @@
-%define upstream_version 2.1-2
+%define upstream_version 2.1-7
 
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
 Version:	2.1
-Release:	9
+Release:	10
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		http://fedorahosted.org/microcode_ctl
