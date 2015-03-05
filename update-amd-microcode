@@ -72,6 +72,6 @@ fi
 # load the new microcode
 
 if [ "-$1" != "---no-reload" -a "-$1" != "---download-only" ] ; then
-    /etc/rc.d/init.d/microcode_ctl reload
+    test -f /sys/devices/system/cpu/microcode/reload && /bin/echo 1 > /sys/devices/system/cpu/microcode/reload || exit 0
 fi
 

@@ -23,7 +23,7 @@ if [ "-$1" == "---download-only" ]; then
 	LOCAL_DIR=$PWD
 	DOWNLOAD_ONLY=1
 else
-LOCAL_DIR=/lib/firmware/intel-microcode
+LOCAL_DIR=/lib/firmware/intel-ucode
 fi
 
 REMOTE_RSS='http://feeds.downloadcenter.intel.com/rss/?p=483&lang=eng'
@@ -68,7 +68,13 @@ esac
 
 if curl --retry 2 --retry-delay 20 --silent "$REMOTE_FILE" | $FILTER > "$LOCAL_FILE".tmp ; then
     mv "$LOCAL_FILE".tmp "$LOCAL_FILE"
-    echo "microcode downloaded sucessfully" 1>&2
+    intel-microcode2ucode $LOCAL_FILE
+    for file in intel-ucode/*; do
+     install -m 0644 /lib/firmware/$file 
+    done
+    rm -rf intel-ucode
+    rm -f "$LOCAL_FILE"
+    echo "microcode downloaded and converted sucessfully" 1>&2
 else
     echo "Error on downloading the microcode." 1>&2
     echo "Install microcode manually." 1>&2
@@ -78,6 +84,6 @@ fi
 # load the new microcode
 
 if [ "-$1" != "---no-reload" -a "-$1" != "---download-only" ] ; then
-    /etc/rc.d/init.d/microcode_ctl reload
+    test -f /sys/devices/system/cpu/microcode/reload && /bin/echo 1 > /sys/devices/system/cpu/microcode/reload || exit 0
 fi
 
