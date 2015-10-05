@@ -70,7 +70,7 @@ if curl --retry 2 --retry-delay 20 --silent "$REMOTE_FILE" | $FILTER > "$LOCAL_F
     mv "$LOCAL_FILE".tmp "$LOCAL_FILE"
     intel-microcode2ucode $LOCAL_FILE
     for file in intel-ucode/*; do
-     install -m 0644 /lib/firmware/$file 
+     install -m 0644 $file /lib/firmware/$file
     done
     rm -rf intel-ucode
     rm -f "$LOCAL_FILE"
