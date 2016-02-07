@@ -21,10 +21,10 @@ if [ $RETVAL -ne 0 -a "-$1" != "---download-only" ]; then
     exit 1
 fi
 
-REMOTE_FILE='http://www.amd64.org/pub/microcode/amd-ucode-latest.tar'
+REMOTE_FILE='http://www.amd64.org/microcode/amd-ucode-latest.tar.bz2'
 if [ "-$1" == "---download-only" ]; then
-	LOCAL_DIR=$PWD
-	DOWNLOAD_ONLY=1
+        LOCAL_DIR=$PWD
+        DOWNLOAD_ONLY=1
 else
 DOWNLOAD_ONLY=0
 
@@ -43,11 +43,11 @@ if [ -f "$LOCAL_FILE" ] ; then
     echo "Remote version: $REMOTE_DATE"
 
     if [ "0$REMOTE_DATE" = "0" ] ; then
-	echo "could not extract the actual data of remote microcode"
-	exit 1
+        echo "could not extract the actual data of remote microcode"
+        exit 1
     elif [ "0$REMOTE_DATE" -le "0$LOCAL_DATE" ] ; then
-	echo "No need to download a new microcode" 1>&2
-	exit 0
+        echo "No need to download a new microcode" 1>&2
+        exit 0
     fi
 else
     echo "Local version: (none)"
@@ -57,10 +57,10 @@ fi # ! DOWNLOAD_ONLY
 
 echo "Downloading a new version of microcode."
 
-if curl --retry 2 --retry-delay 20 --silent "$REMOTE_FILE" -o $LOCAL_DIR/amd-ucode-latest.tar ; then
+if curl --retry 2 --retry-delay 20 --silent "$REMOTE_FILE" -o $LOCAL_DIR/amd-ucode-latest.tar.bz2 ; then
     if [ $DOWNLOAD_ONLY -ne 1 ]; then
-	tar --strip-components=1 -xf $LOCAL_DIR/amd-ucode-latest.tar -C $LOCAL_DIR
-	rm -f $LOCAL_DIR/amd-ucode-latest.tar
+        tar --strip-components=1 -xf $LOCAL_DIR/amd-ucode-latest.tar.bz2 -C $LOCAL_DIR
+        rm -f $LOCAL_DIR/amd-ucode-latest.tar
     fi
     echo "microcode downloaded sucessfully" 1>&2
 else
@@ -74,4 +74,3 @@ fi
 if [ "-$1" != "---no-reload" -a "-$1" != "---download-only" ] ; then
     test -f /sys/devices/system/cpu/microcode/reload && /bin/echo 1 > /sys/devices/system/cpu/microcode/reload || exit 0
 fi
-
