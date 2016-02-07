@@ -1,9 +1,9 @@
-%define upstream_version 2.1-7
+%define upstream_version 2.1-8
 
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
 Version:	2.1
-Release:	12
+Release:	13
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		http://fedorahosted.org/microcode_ctl
@@ -19,10 +19,9 @@ Source6:	update-microcode
 ExclusiveArch:	%ix86 x86_64 %arm
 # needed by firmware downloaders
 Suggests:	curl
-# we have microcode packaged
-Suggests:	microcode
 # (fc) 1.17-8 fix paths (Fedora)
-Provides:	microcode
+Provides:	microcode = 0.20140323-4
+Obsoletes:	microcode < 0.20140323-4
 Requires(post,preun):	rpm-helper
 
 %description
@@ -51,17 +50,17 @@ mkdir -p %{buildroot}%{_mandir}/man8
 
 # do not ship non-free firmware in this package
 rm -rf %{buildroot}/lib/firmware
-# install intel firmware downloader 
+# install intel firmware downloader
 install -m 755 %{SOURCE2} %{buildroot}%{_sbindir}
 install -m 644 %{SOURCE3} %{buildroot}%{_mandir}/man8
-# install AMD firmware downloader 
+# install AMD firmware downloader
 install -m 755 %{SOURCE4} %{buildroot}%{_sbindir}
 install -m 644 %{SOURCE5} %{buildroot}%{_mandir}/man8
 # install monthly cron
 mkdir -p %{buildroot}%{_sysconfdir}/cron.monthly
 install -m755 %{SOURCE6} %{buildroot}%{_sysconfdir}/cron.monthly
 #
-mkdir -p %{buildroot}/lib/firmware/amd-ucode 
+mkdir -p %{buildroot}/lib/firmware/amd-ucode
 mkdir -p %{buildroot}/lib/firmware/intel-ucode
 
 %files
