@@ -16,7 +16,7 @@ Source4:	update-amd-microcode
 Source5:	update-amd-microcode.8
 # monthly cron
 Source6:	update-microcode
-ExclusiveArch:	%ix86 x86_64 %arm
+ExclusiveArch:	%ix86 x86_64 %armx
 # needed by firmware downloaders
 Suggests:	curl
 # (fc) 1.17-8 fix paths (Fedora)
