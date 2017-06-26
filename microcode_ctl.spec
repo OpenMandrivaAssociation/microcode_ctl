@@ -6,8 +6,8 @@ Version:	2.1
 Release:	16
 Group:		System/Kernel and hardware
 License:	GPLv2
-Url:		http://fedorahosted.org/microcode_ctl
-Source0:	http://fedorahosted.org/released/microcode_ctl/%{name}-%{upstream_version}.tar.xz
+Url:		https://pagure.io/microcode_ctl
+Source0:	https://releases.pagure.org/microcode_ctl/%{name}-%{upstream_version}.tar.xz
 ExclusiveArch:	%ix86 x86_64 %armx
 # (fc) 1.17-8 fix paths (Fedora)
 Provides:	microcode = 0.20140323-4
