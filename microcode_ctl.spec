@@ -44,6 +44,5 @@ mkdir -p %{buildroot}/lib/firmware/intel-ucode
 
 %files
 %doc README
-%{_sbindir}/*
 /lib/firmware/amd-ucode
 /lib/firmware/intel-ucode
