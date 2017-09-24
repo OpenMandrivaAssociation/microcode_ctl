@@ -1,9 +1,9 @@
-%define upstream_version 2.1-12
+%define upstream_version 2.1-13
 
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
 Version:	2.1
-Release:	16
+Release:	17
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		https://pagure.io/microcode_ctl
