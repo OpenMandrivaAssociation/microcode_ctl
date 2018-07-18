@@ -9,7 +9,7 @@ License:	GPLv2
 Url:		https://pagure.io/microcode_ctl
 Source0:	https://releases.pagure.org/microcode_ctl/%{name}-%{upstream_version}.tar.xz
 Source1: microcode_ctl.rpmlintrc
-ExclusiveArch:	%ix86 x86_64 %armx
+ExclusiveArch:	%ix86 x86_64 %armx znver1
 # (fc) 1.17-8 fix paths (Fedora)
 Provides:	microcode = 0.20140323-4
 Obsoletes:	microcode < 0.20140323-4
