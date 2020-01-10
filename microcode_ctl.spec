@@ -29,7 +29,7 @@ This package also support updating latest AMD CPU microcode.
 
 %prep
 %setup -qn %{name}-%{upstream_version}
-%apply_patches
+%autopatch -p1
 
 %build
 %setup_compile_flags
