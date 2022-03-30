@@ -1,3 +1,6 @@
+# Work around incomplete debug packages
+%global _empty_manifest_terminate_build 0
+
 %define upstream_version 2.1-13
 
 Summary:	Intel / AMD CPU Microcode Utility
@@ -28,18 +31,16 @@ Reboot and it reverts back to the old microcode.
 This package also support updating latest AMD CPU microcode.
 
 %prep
-%setup -qn %{name}-%{upstream_version}
-%autopatch -p1
+%autosetup -n %{name}-%{upstream_version} -p1
 
 %build
-%setup_compile_flags
-%make
+%set_build_flags
+%make_build
 
 %install
 mkdir -p %{buildroot}%{_mandir}/man8
-%makeinstall_std INSDIR=%{_sbindir} PREFIX=%{_prefix}
+%make_install INSDIR=%{_sbindir} PREFIX=%{_prefix}
 
-#
 mkdir -p %{buildroot}/lib/firmware/amd-ucode
 mkdir -p %{buildroot}/lib/firmware/intel-ucode
 
