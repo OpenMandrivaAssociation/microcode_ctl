@@ -6,7 +6,7 @@
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
 Version:	2.1
-Release:	19
+Release:	20
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		https://pagure.io/microcode_ctl
