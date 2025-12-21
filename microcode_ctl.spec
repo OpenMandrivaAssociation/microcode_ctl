@@ -17,6 +17,7 @@ ExclusiveArch:	%ix86 %{x86_64} %{armx}
 Provides:	microcode = 0.20140323-4
 Obsoletes:	microcode < 0.20140323-4
 
+BuildRequires:	make
 %description
 Since PentiumPro, Intel CPU are made of a RISC chip and of a microcode whose
 purpose is to decompose "old" ia32 instruction into new risc ones.
