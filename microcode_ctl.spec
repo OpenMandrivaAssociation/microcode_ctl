@@ -5,8 +5,8 @@
 
 Summary:	Intel / AMD CPU Microcode Utility
 Name:		microcode_ctl
-Version:	2.1
-Release:	20
+Version:	20260512
+Release:	1
 Group:		System/Kernel and hardware
 License:	GPLv2
 Url:		https://pagure.io/microcode_ctl
@@ -31,7 +31,7 @@ Reboot and it reverts back to the old microcode.
 This package also support updating latest AMD CPU microcode.
 
 %prep
-%autosetup -n %{name}-%{upstream_version} -p1
+%autosetup -n microcode_ctl-2.1-13 -p1
 
 sed -i -e 's#/lib/firmware#%{_prefix}/lib/firmware#g' Makefile
 
